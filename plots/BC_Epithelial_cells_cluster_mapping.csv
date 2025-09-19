@@ -1,0 +1,13 @@
+"cluster","dominant_cell_type","cell_count","type_proportion","cluster_label"
+"1","Epithelial_cells_Unassigned",516,0.339147286821705,"C1
+Unassigned
+(n=516)"
+"2","Epithelial_cells_Basal_epithelial",157,0.32484076433121,"C2
+epithelial
+(n=157)"
+"3","Epithelial_cells_Basal_epithelial",205,0.614634146341463,"C3
+epithelial
+(n=205)"
+"4","Epithelial_cells_Secretory_epithelial",122,0.60655737704918,"C4
+epithelial
+(n=122)"

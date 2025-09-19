@@ -1,0 +1,14 @@
+=== 错误详情 ===
+时间: 2025-09-16 01:45:44.759338 
+癌种: BC 
+细胞类型: Endothelial_cells 
+步骤: gene_analysis 
+错误信息: CDS对象为空 
+追踪信息:
+$...
+NULL
+
+$...
+warn_if_no_scanoramaCT()
+
+===================

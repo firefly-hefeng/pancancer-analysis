@@ -1,0 +1,229 @@
+Loading required package: SeuratObject
+Loading required package: sp
+
+Attaching package: ‘SeuratObject’
+
+The following objects are masked from ‘package:base’:
+
+    intersect, t
+
+Warning messages:
+1: package ‘SeuratObject’ was built under R version 4.3.3 
+2: package ‘sp’ was built under R version 4.3.3 
+Warning message:
+package ‘ggplot2’ was built under R version 4.3.3 
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Warning message:
+package ‘dplyr’ was built under R version 4.3.3 
+Warning message:
+package ‘pheatmap’ was built under R version 4.3.2 
+Warning message:
+package ‘RColorBrewer’ was built under R version 4.3.3 
+Loading required package: viridisLite
+Warning messages:
+1: package ‘viridis’ was built under R version 4.3.2 
+2: package ‘viridisLite’ was built under R version 4.3.3 
+Warning message:
+package ‘reshape2’ was built under R version 4.3.3 
+
+Attaching package: ‘scales’
+
+The following object is masked from ‘package:viridis’:
+
+    viridis_pal
+
+Warning message:
+package ‘scales’ was built under R version 4.3.3 
+开始综合分析和可视化...
+加载注释结果...
+  加载 BC 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 COADREAD 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 ESCA 主文件...
+    发现 5 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Epithelial_cells
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 GBM 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 HNSC 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 KIRC 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 LC 主文件...
+    发现 5 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: T_cells
+  加载 LIHC 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 LUAD 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 LUSC 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 Melan 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 NB 主文件...
+    发现 6 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 OV 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 PAAD 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 PRAD 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+  加载 STAD 主文件...
+    发现 7 个详细文件
+      加载详细文件: B_cell
+      加载详细文件: Endothelial_cells
+      加载详细文件: Epithelial_cells
+      加载详细文件: Fibroblasts
+      加载详细文件: Myeloid
+      加载详细文件: NK_cell
+      加载详细文件: T_cells
+成功加载 16 个癌种
+其中 16 个癌种有详细分析文件
+生成综合统计...
+评估 BC 主注释质量...
+评估 BC 详细注释质量...
+评估 COADREAD 主注释质量...
+评估 COADREAD 详细注释质量...
+评估 ESCA 主注释质量...
+评估 ESCA 详细注释质量...
+评估 GBM 主注释质量...
+评估 GBM 详细注释质量...
+评估 HNSC 主注释质量...
+评估 HNSC 详细注释质量...
+评估 KIRC 主注释质量...
+评估 KIRC 详细注释质量...
+评估 LC 主注释质量...
+评估 LC 详细注释质量...
+评估 LIHC 主注释质量...
+评估 LIHC 详细注释质量...
+评估 LUAD 主注释质量...
+评估 LUAD 详细注释质量...
+评估 LUSC 主注释质量...
+评估 LUSC 详细注释质量...
+评估 Melan 主注释质量...
+评估 Melan 详细注释质量...
+评估 NB 主注释质量...
+评估 NB 详细注释质量...
+评估 OV 主注释质量...
+评估 OV 详细注释质量...
+评估 PAAD 主注释质量...
+评估 PAAD 详细注释质量...
+评估 PRAD 主注释质量...
+评估 PRAD 详细注释质量...
+评估 STAD 主注释质量...
+评估 STAD 详细注释质量...
+创建可视化图表...
+创建概览图表...
+Error in pivot_longer(., everything(), names_to = "Analysis_Type", values_to = "Count") : 
+  could not find function "pivot_longer"
+Calls: main_analysis -> create_overview_plots -> %>%
+In addition: There were 13 warnings (use warnings() to see them)
+Execution halted

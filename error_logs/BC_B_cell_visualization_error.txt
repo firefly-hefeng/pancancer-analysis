@@ -1,0 +1,18 @@
+=== 错误详情 ===
+时间: 2025-09-16 01:25:10.028221 
+癌种: BC 
+细胞类型: B_cell 
+步骤: visualization 
+错误信息: unable to find an inherited method for function ‘clusters’ for signature ‘x = "NULL"’ 
+详细信息:
+$call
+[1] "expr"
+
+追踪信息:
+$...
+NULL
+
+$...
+warn_if_no_scanoramaCT()
+
+===================

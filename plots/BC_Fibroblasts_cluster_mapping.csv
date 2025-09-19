@@ -1,0 +1,13 @@
+"cluster","dominant_cell_type","cell_count","type_proportion","cluster_label"
+"1","Fibroblasts_Normal_fibroblasts",223,0.430493273542601,"C1
+fibroblasts
+(n=223)"
+"2","Fibroblasts_Myofibroblasts",163,0.484662576687117,"C2
+Myofibroblasts
+(n=163)"
+"3","Fibroblasts_CAFs",375,0.365333333333333,"C3
+CAFs
+(n=375)"
+"4","Fibroblasts_Unassigned",239,0.497907949790795,"C4
+Unassigned
+(n=239)"

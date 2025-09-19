@@ -1,0 +1,13 @@
+"cluster","dominant_cell_type","cell_count","type_proportion","cluster_label"
+"1","NK_cell_NK_cells",215,0.358139534883721,"C1
+cells
+(n=215)"
+"2","NK_cell_Natural_killer_cells",263,0.429657794676806,"C2
+cells
+(n=263)"
+"3","NK_cell_Low_density_basophils",167,1,"C3
+basophils
+(n=167)"
+"4","NK_cell_Terminal_effector_CD8_T_cells",357,0.372549019607843,"C4
+cells
+(n=357)"
