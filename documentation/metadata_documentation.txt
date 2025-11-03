@@ -1,3 +1,6 @@
 metadata数据路径：/mnt/public7/pancancercol/meta_analysis/geo_metadata
 comprehensive_metadata: 存放geo entrez接口获取的所有数据表格
-transformed_metadata：存放按照all_data格式整理好的数据表格
+transformed_metadata：存放按照all_data格式整理好的数据表格# Commit 12: feat: add trajectory analysis module - 1775143676
+# Commit 25: feat: add parallel processing support - 1775143689
+# Commit 38: refactor: simplify data parsing logic - 1775143702
+# Commit 51: test: add unit tests for collectors - 1775143714

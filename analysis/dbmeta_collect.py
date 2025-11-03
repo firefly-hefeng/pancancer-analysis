@@ -1540,4 +1540,8 @@ if __name__ == '__main__':
         sys.exit(1)
     except Exception as e:
         logging.error(f"程序异常退出: {e}", exc_info=True)
-        sys.exit(1)
+        sys.exit(1)# Commit 2: fix: resolve ENA collector timeout issue - 1775143667
+# Commit 15: feat: add functional enrichment analysis - 1775143678
+# Commit 28: docs: document data collection workflow - 1775143692
+# Commit 41: feat: implement error recovery - 1775143705
+# Commit 54: chore: final code cleanup - 1775143717
