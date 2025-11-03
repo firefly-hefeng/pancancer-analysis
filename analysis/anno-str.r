@@ -7,7 +7,7 @@ library(optparse)
 
 option_list <- list(
   make_option(c("--root"), type = "character",
-              default = "/mnt/public7/pancancercol/hefeng/cluster-annotation",
+              default = "/mnt/public7/pancancercol/hefeng/cluster-annotation/fine_annotation",
               help = "根目录"),
   make_option(c("--cancer"), type = "character",
               default = "PRAD",
