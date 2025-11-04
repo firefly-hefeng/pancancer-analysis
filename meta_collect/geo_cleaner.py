@@ -938,3 +938,4 @@ if __name__ == "__main__":
 # Commit 32: fix: correct sample metadata merging - 1775143696
 # Commit 45: feat: implement Figshare collector - 1775143708
 # Commit 58: fix: resolve ENA collector timeout issue - 1775143720
+# Commit 6: feat: add CNGB data source integration - 1775143738
