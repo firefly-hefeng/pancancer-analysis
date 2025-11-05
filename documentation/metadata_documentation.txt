@@ -4,3 +4,4 @@ transformed_metadata：存放按照all_data格式整理好的数据表格# Commi
 # Commit 25: feat: add parallel processing support - 1775143689
 # Commit 38: refactor: simplify data parsing logic - 1775143702
 # Commit 51: test: add unit tests for collectors - 1775143714
+# Commit 12: feat: add trajectory analysis module - 1775143743
