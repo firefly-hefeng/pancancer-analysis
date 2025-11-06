@@ -19,8 +19,8 @@ library(future.apply)
 # ============================================================================
 # 设置并行worker数量（根据你的CPU核心数调整）
 # 对于大型Seurat对象，建议减少worker数量以避免内存问题
-n_workers <- min(parallel::detectCores() - 2, 12)  # 保留2个核心，最多使用8个
-options(future.globals.maxSize = 8 * 1024^3)  # 增加到4GB
+n_workers <- min(parallel::detectCores() - 2, 8)  # 保留2个核心，最多使用8个
+options(future.globals.maxSize = 250 * 1024^3)  # 增加到4GB
 plan(multisession, workers = n_workers)
 message("并行计算已启用，使用 ", n_workers, " 个workers")
 
@@ -913,10 +913,10 @@ message("=", rep("=", 80))
 
 # 选择评估模式
 # 模式1: 评估单个癌种
-# evaluate_cancer_annotation("BRCA")
+evaluate_cancer_annotation("Melan")
 
 # 模式2: 评估所有癌种（串行，稳定但较慢）
-evaluation_summary <- evaluate_all_cancers()
+# evaluation_summary <- evaluate_all_cancers()
 
 # 关闭并行计算
 plan(sequential)
