@@ -18,7 +18,7 @@ library(future.apply)
 # ============================================================================
 # 根据你的服务器核心数调整workers数量
 # 建议设置为服务器核心数的70-80%
-plan(multisession, workers = 10)  # 使用8个核心并行计算
+plan(multisession, workers = 10)  # 使用10个核心并行计算
 options(future.globals.maxSize = 8000 * 1024^2)  # 增加全局变量大小限制到8GB
 
 # ============================================================================
@@ -120,7 +120,46 @@ get_marker_genes <- function() {
 marker_genes <- get_marker_genes()
 
 # ============================================================================
-# 2. 优化版 Marker基因UMAP可视化
+# 辅助：生成按细胞类型/主类型着色的 UMAP 图
+# ============================================================================
+plot_celltype_umap <- function(seurat_obj, group_col = "fine_cell_type", title = NULL) {
+  if (!"umap" %in% names(seurat_obj@reductions)) {
+    stop("对象缺少 UMAP 降维结果，请先运行 RunUMAP。")
+  }
+  if (!group_col %in% colnames(seurat_obj@meta.data)) {
+    stop("分组列不存在于meta.data: ", group_col)
+  }
+  emb <- Embeddings(seurat_obj, reduction = "umap")
+  df <- data.frame(
+    UMAP_1 = emb[, 1],
+    UMAP_2 = emb[, 2],
+    group = seurat_obj@meta.data[[group_col]],
+    stringsAsFactors = FALSE
+  )
+  df$group <- as.factor(df$group)
+  
+  # 自动调色板
+  n_groups <- length(levels(df$group))
+  if (n_groups <= 12) {
+    palette_cols <- RColorBrewer::brewer.pal(max(3, n_groups), "Set3")
+  } else {
+    palette_cols <- viridis::viridis(n_groups, option = "turbo")
+  }
+  
+  ggplot(df, aes(x = UMAP_1, y = UMAP_2, color = group)) +
+    geom_point(size = 0.3, alpha = 0.8) +
+    scale_color_manual(values = palette_cols) +
+    theme_minimal() +
+    theme(
+      legend.position = "right",
+      legend.title = element_blank(),
+      plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+    ) +
+    ggtitle(ifelse(is.null(title), paste0("UMAP colored by ", group_col), title))
+}
+
+# ============================================================================
+# 2. 优化版 Marker基因UMAP可视化（已加入先验分布图）
 # ============================================================================
 plot_marker_umap_optimized <- function(seurat_obj, markers_list, cancer_type, plot_type = "immune") {
   message("生成", plot_type, "marker基因UMAP图（优化版）...")
@@ -195,8 +234,35 @@ plot_marker_umap_optimized <- function(seurat_obj, markers_list, cancer_type, pl
     ggsave(filename, p, width = 8, height = 6, device = "pdf")
   }
   
+  # 新增：按细胞类型上色的 UMAP（先验分布图）
+  # 如果需要看主类型分布，可将 group_col 改为 "major_cell_type"
+  group_col <- "fine_cell_type"
+  if (group_col %in% colnames(seurat_obj@meta.data)) {
+    prior_umap <- plot_celltype_umap(
+      seurat_obj,
+      group_col = group_col,
+      title = paste0("UMAP colored by ", group_col)
+    )
+    
+    # 单独保存这张图
+    prior_filename <- file.path(
+      output_dir,
+      "umap_plots",
+      paste0(cancer_type, "_", plot_type, "_celltype_umap.pdf")
+    )
+    ggsave(prior_filename, prior_umap, width = 8, height = 6, device = "pdf")
+  } else {
+    prior_umap <- NULL
+    warning("meta.data 中不存在列: ", group_col, "，跳过先验分布 UMAP")
+  }
+  
   # 创建组合图
   if (length(plot_list) > 0) {
+    # 若存在先验 UMAP，则追加到列表末尾
+    if (!is.null(prior_umap)) {
+      plot_list <- c(plot_list, list(`CellType_UMAP` = prior_umap))
+    }
+    
     n_plots <- length(plot_list)
     ncol <- min(3, ceiling(sqrt(n_plots)))  # 最多3列
     nrow <- ceiling(n_plots / ncol)
@@ -270,7 +336,12 @@ perform_findmarkers_optimized <- function(seurat_obj, cancer_type) {
         markers$cell_type <- cell_type
         
         # 按log2FC排序并只保留top markers
-        markers <- markers[order(markers$avg_log2FC, decreasing = TRUE), ]
+        if ("avg_log2FC" %in% colnames(markers)) {
+          markers <- markers[order(markers$avg_log2FC, decreasing = TRUE), ]
+        } else if ("avg_logFC" %in% colnames(markers)) {
+          markers <- markers[order(markers$avg_logFC, decreasing = TRUE), ]
+          colnames(markers)[colnames(markers) == "avg_logFC"] <- "avg_log2FC"
+        }
         markers <- head(markers, OPTIMIZATION_PARAMS$max_markers_per_type)
         
         message("    ✓ ", cell_type, ": 发现 ", nrow(markers), " 个marker基因")
@@ -332,7 +403,9 @@ perform_enrichment_analysis_optimized <- function(markers_df, cancer_type) {
     
     # 提取该细胞类型的marker基因
     markers_subset <- markers_df[markers_df$cell_type == cell_type, ]
-    markers_subset <- markers_subset[order(markers_subset$avg_log2FC, decreasing = TRUE), ]
+    if ("avg_log2FC" %in% colnames(markers_subset)) {
+      markers_subset <- markers_subset[order(markers_subset$avg_log2FC, decreasing = TRUE), ]
+    }
     
     # 只取top N基因
     top_n <- min(OPTIMIZATION_PARAMS$enrichment_gene_number, nrow(markers_subset))
@@ -465,7 +538,13 @@ save_enrichment_results <- function(enrichment_results, cancer_type) {
     }
     
     # 保存KEGG结果
-    if (!is.null(enrichment_results[[cell_type]]$KEGG)) {
+    if (!is.null(enrichment_results[[cell_type]]$KEKKG)) {
+      # 兼容拼写错误的键名（防御性，正常不会走到这里）
+      kegg_obj <- enrichment_results[[cell_type]]$KEKKG
+    } else {
+      kegg_obj <- enrichment_results[[cell_type]]$KEGG
+    }
+    if (!is.null(kegg_obj)) {
       kegg_file <- file.path(
         output_dir,
         "summary_stats",
@@ -473,7 +552,7 @@ save_enrichment_results <- function(enrichment_results, cancer_type) {
       )
       
       write.csv(
-        enrichment_results[[cell_type]]$KEGG@result,
+        kegg_obj@result,
         kegg_file,
         row.names = FALSE
       )
@@ -512,11 +591,15 @@ plot_enrichment_results <- function(enrichment_results, cancer_type) {
     }
     
     # KEGG图
-    if (!is.null(enrichment_results[[cell_type]]$KEGG)) {
+    kegg_obj <- enrichment_results[[cell_type]]$KEGG
+    if (is.null(kegg_obj) && !is.null(enrichment_results[[cell_type]]$KEKKG)) {
+      kegg_obj <- enrichment_results[[cell_type]]$KEKKG
+    }
+    if (!is.null(kegg_obj)) {
       tryCatch({
         # Dotplot
-        p_kegg <- dotplot(enrichment_results[[cell_type]]$KEGG, showCategory = 15) +
-          ggtitle(paste0(cell_type, " - KEGG")) +
+        p_kegg <- dotplot(kegg_obj, showCategory = 15) +
+          ggtitle(paste0(cancer_type, " - KEGG")) +
           theme(plot.title = element_text(hjust = 0.5, face = "bold"))
         
         kegg_plot_file <- file.path(
@@ -575,10 +658,17 @@ generate_evaluation_report <- function(cancer_type, markers_df, enrichment_resul
     for (ct in cell_types) {
       ct_markers <- markers_df[markers_df$cell_type == ct, ]
       cat("  ", ct, ":\n")
-      cat("    Marker基因数: ", nrow(ct_markers), "\n")
-      cat("    平均log2FC: ", round(mean(ct_markers$avg_log2FC), 3), "\n")
-      cat("    最大log2FC: ", round(max(ct_markers$avg_log2FC), 3), "\n")
-      cat("    Top 5 markers: ", paste(head(ct_markers$gene, 5), collapse = ", "), "\n\n")
+      if (nrow(ct_markers) > 0) {
+        if (!"avg_log2FC" %in% colnames(ct_markers) && "avg_logFC" %in% colnames(ct_markers)) {
+          ct_markers$avg_log2FC <- ct_markers$avg_logFC
+        }
+        cat("    Marker基因数: ", nrow(ct_markers), "\n")
+        cat("    平均log2FC: ", round(mean(ct_markers$avg_log2FC), 3), "\n")
+        cat("    最大log2FC: ", round(max(ct_markers$avg_log2FC), 3), "\n")
+        cat("    Top 5 markers: ", paste(head(ct_markers$gene, 5), collapse = ", "), "\n\n")
+      } else {
+        cat("    无显著marker\n\n")
+      }
     }
   } else {
     cat("  无FindMarkers结果\n\n")
@@ -601,11 +691,15 @@ generate_evaluation_report <- function(cancer_type, markers_df, enrichment_resul
         }
       }
       
-      if (!is.null(enrichment_results[[ct]]$KEGG)) {
-        n_kegg <- nrow(enrichment_results[[ct]]$KEGG@result)
+      kegg_obj <- enrichment_results[[ct]]$KEGG
+      if (is.null(kegg_obj) && !is.null(enrichment_results[[ct]]$KEKKG)) {
+        kegg_obj <- enrichment_results[[ct]]$KEKKG
+      }
+      if (!is.null(kegg_obj)) {
+        n_kegg <- nrow(kegg_obj@result)
         cat("    KEGG通路数: ", n_kegg, "\n")
         if (n_kegg > 0) {
-          top_kegg <- head(enrichment_results[[ct]]$KEGG@result$Description, 3)
+          top_kegg <- head(kegg_obj@result$Description, 3)
           cat("    Top 3 KEGG: ", paste(top_kegg, collapse = "; "), "\n")
         }
       }
@@ -680,7 +774,7 @@ evaluate_cancer_annotation <- function(cancer_type) {
   if (!OPTIMIZATION_PARAMS$skip_heatmap) {
     message("\n--- Step 2: Marker基因热图 ---")
     step2_start <- Sys.time()
-    # plot_marker_heatmap函数保持不变
+    # 预留：如需新增热图函数，可在此调用
     step2_time <- as.numeric(difftime(Sys.time(), step2_start, units = "mins"))
     message("Step 2 完成，耗时: ", round(step2_time, 2), " 分钟")
   } else {
@@ -739,8 +833,8 @@ evaluate_all_cancers <- function() {
   # 获取所有癌种目录
   cancer_dirs <- list.dirs(input_dir, full.names = FALSE, recursive = FALSE)
   cancer_dirs <- cancer_dirs[cancer_dirs != "reference" & 
-                             cancer_dirs != "evaluation_results" &
-                             !grepl("^\\.", cancer_dirs)]
+                               cancer_dirs != "evaluation_results" &
+                               !grepl("^\\.", cancer_dirs)]
   
   message("发现 ", length(cancer_dirs), " 个癌种目录")
   
