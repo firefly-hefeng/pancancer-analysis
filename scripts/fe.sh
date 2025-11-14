@@ -8,3 +8,4 @@ tail -f fe.log# Commit 11: feat: implement cell type annotation - 1775143675
 # Commit 11: feat: implement cell type annotation - 1775143742
 # Commit 24: chore: update shell script permissions - 1775143757
 # Commit 37: fix: handle edge cases in annotation - 1775143772
+# Commit 50: docs: add troubleshooting guide - 1775143789
