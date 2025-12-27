@@ -1,0 +1,48 @@
+id,sample_id,title,disease_general,disease,ethnicity,sex,tissue_location,sequencing_platform,experiment_design,sample_type
+141103,141103,Bulk and single-cell RNA-seq of human fetal pancreatic organoids,Other Disease,,,,,,,unknown
+139230,139230,Single cell RNA sequencing of human tissue along the stomach-intestinal tract,Other Disease,,,,,,,unknown
+113176,113176,A telencephalon cell type atlas for goldfish reveals diversity in the evolution of spatial structure and cell types,Normal,,,,brain,,,unknown
+61470,61470,Human tau mutations in cerebral organoids induce a progressive dyshomeostasis of cholesterol,Other Disease,,,,brain,,,unknown
+84462,84462,Data from: Subsets of tissue CD4 T cells display different susceptibilities to HIV infection and death: Analysis by CyTOF and single cell RNA-seq,Other Disease,,,,,,,unknown
+137085,137085,"Western blots of liver-expressed genes in C57BL/NCrl mice gavaged every 4 days for 28 days with 2,3,7,8-tetrachlorodibenzo-p-dioxin (TCDD)",Other Disease,,,,liver,,,unknown
+125080,125080,MERFISH and snRNAseq analysis of healthy and disease human liver,Normal,,,,liver,,,unknown
+144393,144393,Single-cell multi-modal analysis of tumor microenvironment in human non-small cell lung cancer tissues,Cancer,,,,"lung, tumor",,,unknown
+150082,150082,Progesterone signaling in oviductal epithelial cells modulates the immune response to support preimplantation embryonic development ,Normal,,,,,,,unknown
+130717,130717,An atlas of transcribed enhancers across helper T cell diversity for decoding human diseases,Other Disease,,,,,,,unknown
+130714,130714,Transcription start site analysis for heterogenous CD4+ T cells using 5′ scRNA-seq,Other Disease,,,,,,,unknown
+123577,123577,"Raw differential gene expression data, data S1, from: Molecular cascades and cell type-specific signatures in ASD revealed by single cell genomics",Other Disease,,,,brain,,,unknown
+88560,88560,Colorectal cancer interleukin-10 blockade scRNA-seq,Cancer,,,,"liver, tumor",,,unknown
+29994,29994,10x Lacrimal Gland scRNA seq data matrix,Other Disease,,,,,,,unknown
+141241,141241,Aberrant basal cell clonal dynamics shape early lung carcinogenesis,Other Disease,,,,,,,unknown
+30589,30589,Polysome fractionation analysis reveals features important for human nonsense-mediated mRNA decay,Other Disease,,,,,,,unknown
+125303,125303,"Loss of alpha Ba-crystallin, but not alpha A-crystallin, increases age-related cataract in the zebrafish lens",Other Disease,,,,,,,unknown
+113839,113839,Causal identification of single-cell experimental perturbation effects with CINEMA-OT,Other Disease,,,,,,,unknown
+104140,104140,scRNA data from: Organization of the human Intestine at single cell resolution,Other Disease,,,,"intestine, colon",,,unknown
+38967,38967,Colorectal cancer scRNA-seq 10xG-format data matrix,Cancer,,,,"liver, tumor",,,unknown
+137365,137365,Human dermal microvascular arterial and venous blood endothelial cells and their use in bioengineered dermo-epidermal skin substitutes in vitro and in vivo,Other Disease,,,,skin,,,unknown
+115015,115015,Single cell transcriptomics unveiled that early life BDE-99 exposure reprogrammed the gut-liver axis to promote a pro-inflammatory metabolic signature in male mice at late adulthood (Part 1/2),Normal,,,,"liver, intestine, breast",,,unknown
+130903,130903,Single cell transcriptomics unveiled that early life BDE-99 exposure reprogrammed the gut-liver axis to promote a pro-inflammatory metabolic signature in male mice at late adulthood (Part 2/2),Normal,,,,"liver, intestine, breast",,,unknown
+86052,86052,A new gene set identifies senescent cells and predicts senescence-associated pathways across tissues,Other Disease,,,,,,,unknown
+161956,161956,Data from: Cell type-specific dysregulation of gene expression due to Chd8 haploinsufficiency during mouse cortical development,Other Disease,,,,,,,unknown
+106611,106611,Data from: Dissecting gene activation and chromatin remodeling dynamics in single human cells undergoing reprogramming,Other Disease,,,,,,,unknown
+57763,57763,Single cell transcriptomic analyses reveal the impact of bHLH factors on human retinal organoid development,Other Disease,,,,,,,unknown
+89044,89044,Spatially resolved multi-omics deciphers bidirectional tumor-host interdependence in glioblastoma,Cancer,,,,tumor,,,unknown
+96380,96380,Data from: Single cell transcriptomics shows dose-dependent disruption of hepatic zonation by TCDD in mice,Other Disease,,,,liver,,,unknown
+167751,167751,Single-nucleus profiling highlights the all-brain echinoderm nervous system,Other Disease,,,,brain,,,unknown
+169703,169703,Integrating single-cell biophysical and transcriptomic features to resolve functional heterogeneity in mantle cell lymphoma,Cancer,,,,tumor,,,unknown
+111855,111855,Landscape of Mast cell populations across organs in mice and humans,Other Disease,,,,"lung, skin",,,unknown
+148872,148872,Single-nucleus multi-omics identifies shared and distinct pathways in Pick’s and Alzheimer’s disease,Other Disease,,,,,,,unknown
+134063,134063,Myelomeningocele spinal cord organoids scRNAseq,Normal,,,,,,,unknown
+150783,150783,Single-cell multiomics of neuronal activation reveals context-dependent genetic control of brain disorders,Other Disease,,,,,,,unknown
+118132,118132,Developmental isoform diversity in the human neocortex informs neuropsychiatric risk mechanisms,Other Disease,,,,brain,,,unknown
+89499,89499,Highly-multiplexed mass cytometry  screen of human bone marrow hematopoietic stem and progenitor cells,Other Disease,,,,,,,unknown
+148503,148503,Histological analyses data for: Multinucleated giant cells are hallmarks of ovarian aging with unique immune and degradation-associated molecular signatures,Other Disease,,,,ovary,,,unknown
+3573,3573,Data from: Gene signature of the human pancreatic ε-cell,Other Disease,,,,,,,unknown
+103700,103700,Gene expression of PFAS exposed human liver spheroids and quality control,Normal,,,,liver,,,unknown
+147042,147042,Data from: Clone tracking through repeated malaria reveals high-fidelity CD4+ memory responses,Other Disease,,,,blood,,,unknown
+127743,127743,Data from: Molecular and cellular dynamics of the developing human neocortex,Cancer,,,,,,,unknown
+110622,110622,Cross-species analysis identifies mitochondrial dysregulation as a functional consequence of the schizophrenia-associated 3q29 deletion,Other Disease,,,,brain,,,unknown
+115652,115652,MERFISH on developing thalamus,Other Disease,,,,brain,,,unknown
+116251,116251,An ON-type direction selective ganglion cell in primate retina,Normal,,,,brain,,,unknown
+122653,122653,Data from: A novel triptolide analog downregulates NF-kB and induces mitochondrial apoptosis pathways in human pancreatic cancer,Cancer,,,,tumor,,,unknown
+159193,159193,Brain-derived exosomal hemoglobin transfer contributes to neuronal mitochondrial homeostasis under hypoxia,Other Disease,,,,brain,,,unknown

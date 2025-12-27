@@ -1,8 +1,8 @@
 ################################################################################
-# 🎯 TME单细胞注释质量评估系统 v3.0 - 批量处理完整版
+# 🎯 TME单细胞注释质量评估系统 v3.1 - 大数据优化版
 # 作者：Claude
-# 日期：2025-11-17
-# 功能：自动扫描、评估、可视化、异常处理
+# 日期：2025-11-24
+# 功能：自动扫描、评估、可视化、异常处理 + 大数据优化
 ################################################################################
 
 suppressPackageStartupMessages({
@@ -19,6 +19,11 @@ suppressPackageStartupMessages({
   library(GGally)
   library(ggrepel)
   library(fmsb)
+  
+  # 尝试加载FNN用于大数据近似计算
+  if (!requireNamespace("FNN", quietly = TRUE)) {
+    cat("ℹ️  推荐安装FNN包以加速大数据计算: install.packages('FNN')\n")
+  }
 })
 
 #===============================================================================
@@ -268,9 +273,10 @@ calculate_functional_consistency <- function(seurat_obj, cell_type_col = "fine_c
   return(fcs_df)
 }
 
-## 2.3 细胞纯度（Silhouette）----
+## 2.3 细胞纯度（Silhouette）- 大数据优化版 ----
 calculate_cell_purity <- function(seurat_obj, cell_type_col = "fine_cell_type",
-                                   reduction = "umap", dims = 1:2) {
+                                   reduction = "umap", dims = 1:2,
+                                   max_cells_for_exact = 30000) {
   
   cat("  🎯 计算细胞纯度（Silhouette）...\n")
   
@@ -286,19 +292,50 @@ calculate_cell_purity <- function(seurat_obj, cell_type_col = "fine_cell_type",
   
   embeddings <- Embeddings(seurat_obj, reduction = reduction)[, dims]
   hierarchy <- parse_cell_type_hierarchy(seurat_obj@meta.data[[cell_type_col]])
+  n_cells <- nrow(embeddings)
+  
+  cat(sprintf("     ℹ️  总细胞数: %s\n", format(n_cells, big.mark = ",")))
+  
+  # 策略选择
+  if (n_cells <= max_cells_for_exact) {
+    cat("     ✓ 使用精确Silhouette计算\n")
+    result <- calculate_silhouette_exact(embeddings, hierarchy)
+  } else {
+    cat("     ℹ️  细胞数过多，使用采样策略\n")
+    result <- calculate_silhouette_sampled(embeddings, hierarchy, max_cells_for_exact)
+  }
+  
+  # 清理内存
+  rm(embeddings)
+  gc(verbose = FALSE)
+  
+  return(result)
+}
+
+## 2.3.1 精确计算（小数据集）----
+calculate_silhouette_exact <- function(embeddings, hierarchy) {
+  
+  major_purity <- data.frame()
+  sub_purity <- data.frame()
   
   # Major类型
   major_factor <- factor(hierarchy$major_type)
   if (length(levels(major_factor)) > 1) {
-    sil_major <- silhouette(as.numeric(major_factor), dist(embeddings))
-    major_purity <- data.frame(
-      cell_type = levels(major_factor),
-      silhouette = tapply(sil_major[, 3], hierarchy$major_type, mean),
-      level = "major",
-      stringsAsFactors = FALSE
-    )
-  } else {
-    major_purity <- data.frame()
+    tryCatch({
+      sil_major <- silhouette(as.numeric(major_factor), dist(embeddings))
+      major_purity <- data.frame(
+        cell_type = levels(major_factor),
+        silhouette = tapply(sil_major[, 3], hierarchy$major_type, mean),
+        level = "major",
+        method = "exact",
+        stringsAsFactors = FALSE
+      )
+      cat("     ✓ Major类型计算完成\n")
+    }, error = function(e) {
+      cat(sprintf("     ⚠️  Major计算失败: %s\n", e$message))
+      cat("     ℹ️  尝试降级方案...\n")
+      major_purity <<- calculate_purity_fallback(embeddings, hierarchy, "major")
+    })
   }
   
   # Subtype
@@ -307,23 +344,131 @@ calculate_cell_purity <- function(seurat_obj, cell_type_col = "fine_cell_type",
   cells_valid <- which(hierarchy$sub_type %in% valid_subtypes)
   
   if (length(cells_valid) > 100 && length(valid_subtypes) > 1) {
-    sil_sub <- silhouette(
-      as.numeric(factor(hierarchy$sub_type[cells_valid])),
-      dist(embeddings[cells_valid, ])
-    )
-    sub_purity <- data.frame(
-      cell_type = valid_subtypes,
-      silhouette = tapply(sil_sub[, 3], hierarchy$sub_type[cells_valid], mean),
-      level = "subtype",
-      stringsAsFactors = FALSE
-    )
-  } else {
-    sub_purity <- data.frame()
+    tryCatch({
+      sil_sub <- silhouette(
+        as.numeric(factor(hierarchy$sub_type[cells_valid])),
+        dist(embeddings[cells_valid, ])
+      )
+      sub_purity <- data.frame(
+        cell_type = valid_subtypes,
+        silhouette = tapply(sil_sub[, 3], hierarchy$sub_type[cells_valid], mean),
+        level = "subtype",
+        method = "exact",
+        stringsAsFactors = FALSE
+      )
+      cat("     ✓ Subtype计算完成\n")
+    }, error = function(e) {
+      cat(sprintf("     ⚠️  Subtype计算失败: %s\n", e$message))
+    })
   }
   
-  purity_df <- bind_rows(major_purity, sub_purity)
-  cat(sprintf("     ✓ 完成 %d 个细胞类型\n", nrow(purity_df)))
-  return(purity_df)
+  return(bind_rows(major_purity, sub_purity))
+}
+
+## 2.3.2 采样计算（大数据集）----
+calculate_silhouette_sampled <- function(embeddings, hierarchy, max_cells) {
+  
+  cat(sprintf("     📊 采样至 %s 个细胞进行计算\n", format(max_cells, big.mark = ",")))
+  
+  # 分层采样：保证每个类型的代表性
+  set.seed(42)
+  sample_idx <- stratified_sampling(hierarchy$major_type, max_cells)
+  
+  embeddings_sub <- embeddings[sample_idx, ]
+  hierarchy_sub <- hierarchy[sample_idx, ]
+  
+  cat(sprintf("     ✓ 实际采样: %s 个细胞\n", format(length(sample_idx), big.mark = ",")))
+  
+  # 计算采样数据的Silhouette
+  result <- calculate_silhouette_exact(embeddings_sub, hierarchy_sub)
+  
+  # 标记为采样结果
+  if (nrow(result) > 0) {
+    result$method <- paste0(result$method, "_sampled")
+  }
+  
+  return(result)
+}
+
+## 2.3.3 分层采样辅助函数 ----
+stratified_sampling <- function(labels, target_size) {
+  
+  label_counts <- table(labels)
+  n_labels <- length(label_counts)
+  
+  # 计算每个类别应采样的数量（按比例）
+  sample_sizes <- round(label_counts / sum(label_counts) * target_size)
+  
+  # 确保每个类别至少有100个样本（如果原本就有的话）
+  sample_sizes <- pmax(sample_sizes, pmin(label_counts, 100))
+  
+  # 调整总数
+  if (sum(sample_sizes) > target_size) {
+    scale_factor <- target_size / sum(sample_sizes)
+    sample_sizes <- pmax(round(sample_sizes * scale_factor), 50)
+  }
+  
+  # 执行采样
+  sampled_idx <- c()
+  for (label in names(label_counts)) {
+    cells_in_label <- which(labels == label)
+    n_sample <- min(sample_sizes[label], length(cells_in_label))
+    sampled_idx <- c(sampled_idx, sample(cells_in_label, n_sample))
+  }
+  
+  return(sampled_idx)
+}
+
+## 2.3.4 降级方案：基于中心距离 ----
+calculate_purity_fallback <- function(embeddings, hierarchy, level = "major") {
+  
+  cat("     ℹ️  使用降级方案：基于中心距离计算\n")
+  
+  if (level == "major") {
+    labels <- hierarchy$major_type
+  } else {
+    labels <- hierarchy$sub_type
+  }
+  
+  unique_labels <- unique(labels)
+  purity_scores <- data.frame()
+  
+  for (label in unique_labels) {
+    cells_in <- which(labels == label)
+    cells_out <- which(labels != label)
+    
+    if (length(cells_in) < 10 || length(cells_out) < 10) next
+    
+    # 计算类内紧密度
+    coords_in <- embeddings[cells_in, , drop = FALSE]
+    center <- colMeans(coords_in)
+    dists_within <- sqrt(rowSums(sweep(coords_in, 2, center)^2))
+    avg_within <- mean(dists_within)
+    
+    # 计算类间距离（采样）
+    sample_out <- if(length(cells_out) > 1000) sample(cells_out, 1000) else cells_out
+    sample_in <- if(length(cells_in) > 100) sample(cells_in, 100) else cells_in
+    
+    dists_between <- sapply(sample_in, function(i) {
+      min(sqrt(rowSums(sweep(embeddings[sample_out, , drop = FALSE], 
+                            2, embeddings[i, ])^2)))
+    })
+    avg_between <- mean(dists_between)
+    
+    # 计算伪Silhouette分数
+    pseudo_sil <- (avg_between - avg_within) / max(avg_between, avg_within)
+    
+    purity_scores <- rbind(purity_scores, data.frame(
+      cell_type = label,
+      silhouette = pseudo_sil,
+      level = level,
+      method = "fallback",
+      stringsAsFactors = FALSE
+    ))
+  }
+  
+  cat(sprintf("     ✓ 降级方案完成 %d 个类型\n", nrow(purity_scores)))
+  return(purity_scores)
 }
 
 ## 2.4 注释置信度 ----
@@ -817,7 +962,8 @@ run_single_sample_evaluation <- function(
   cell_type_col = "fine_cell_type",
   output_base_dir = "./TME_Quality_Batch_Results",
   reduction = "umap",
-  dims = 1:2
+  dims = 1:2,
+  max_cells_for_silhouette = 30000
 ) {
   
   # 提取癌种名称
@@ -853,7 +999,7 @@ run_single_sample_evaluation <- function(
     return(NULL)
   }
   
-  cat(sprintf("   ✓ 细胞数: %d\n\n", ncol(seurat_obj)))
+  cat(sprintf("   ✓ 细胞数: %s\n\n", format(ncol(seurat_obj), big.mark = ",")))
   
   # 解析层级
   cat("📋 [2/9] 解析细胞类型层级...\n")
@@ -870,21 +1016,31 @@ run_single_sample_evaluation <- function(
   # MSS
   cat("📋 [4/9] 计算MSS...\n")
   mss_df <- calculate_marker_specificity(seurat_obj, cell_type_col)
+  gc(verbose = FALSE)
   cat("\n")
   
   # FCS
   cat("📋 [5/9] 计算FCS...\n")
   fcs_df <- calculate_functional_consistency(seurat_obj, cell_type_col)
+  gc(verbose = FALSE)
   cat("\n")
   
   # Purity
   cat("📋 [6/9] 计算Purity...\n")
-  purity_df <- calculate_cell_purity(seurat_obj, cell_type_col, reduction, dims)
+  purity_df <- calculate_cell_purity(
+    seurat_obj, 
+    cell_type_col, 
+    reduction, 
+    dims,
+    max_cells_for_exact = max_cells_for_silhouette
+  )
+  gc(verbose = FALSE)
   cat("\n")
   
   # Confidence
   cat("📋 [7/9] 计算Confidence...\n")
   conf_df <- calculate_annotation_confidence(seurat_obj, cell_type_col)
+  gc(verbose = FALSE)
   cat("\n")
   
   # 综合评分
@@ -941,7 +1097,8 @@ run_batch_evaluation <- function(
   output_base_dir = "./TME_Quality_Batch_Results",
   reduction = "umap",
   dims = 1:2,
-  max_parallel = 1  # 建议串行处理避免内存问题
+  max_cells_for_silhouette = 30000,
+  max_parallel = 1
 ) {
   
   cat("\n")
@@ -987,7 +1144,8 @@ run_batch_evaluation <- function(
         cell_type_col = cell_type_col,
         output_base_dir = output_base_dir,
         reduction = reduction,
-        dims = dims
+        dims = dims,
+        max_cells_for_silhouette = max_cells_for_silhouette
       )
     }, error = function(e) {
       cat(sprintf("❌ 处理失败: %s\n", e$message))
@@ -1002,7 +1160,7 @@ run_batch_evaluation <- function(
     }
     
     # 释放内存
-    gc()
+    gc(verbose = FALSE)
   }
   
   # 生成汇总报告
@@ -1224,6 +1382,7 @@ OUTPUT_DIR <- "./TME_Quality_Batch_Results"
 CELL_TYPE_COL <- "fine_cell_type"
 REDUCTION <- "umap"
 DIMS <- 1:2
+MAX_CELLS_SILHOUETTE <- 30000  # 超过此数量将使用采样策略
 
 ## 运行批量评估
 results <- run_batch_evaluation(
@@ -1233,6 +1392,7 @@ results <- run_batch_evaluation(
   output_base_dir = OUTPUT_DIR,
   reduction = REDUCTION,
   dims = DIMS,
+  max_cells_for_silhouette = MAX_CELLS_SILHOUETTE,
   max_parallel = 1
 )
 

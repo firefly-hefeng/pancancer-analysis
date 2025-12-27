@@ -1,0 +1,3 @@
+metadata数据路径：/mnt/public7/pancancercol/meta_analysis/geo_metadata
+comprehensive_metadata: 存放geo entrez接口获取的所有数据表格
+transformed_metadata：存放按照all_data格式整理好的数据表格

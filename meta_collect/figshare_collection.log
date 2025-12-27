@@ -1,0 +1,74 @@
+2025-12-08 12:42:38,537 - INFO - ============================================================
+2025-12-08 12:42:38,537 - INFO - 开始收集Figshare单细胞测序数据
+2025-12-08 12:42:38,537 - INFO - ============================================================
+2025-12-08 12:42:38,537 - INFO - 
+步骤 1/3: 收集所有相关文章...
+2025-12-08 12:42:38,537 - INFO - 搜索关键词: single cell RNA-seq human
+2025-12-08 12:42:39,332 - ERROR - 搜索失败 single cell RNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:39,332 - INFO - 搜索关键词: scRNA-seq human
+2025-12-08 12:42:39,524 - ERROR - 搜索失败 scRNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:39,525 - INFO - 搜索关键词: single-cell transcriptome human
+2025-12-08 12:42:39,717 - ERROR - 搜索失败 single-cell transcriptome human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:39,717 - INFO - 搜索关键词: single cell sequencing human
+2025-12-08 12:42:39,910 - ERROR - 搜索失败 single cell sequencing human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:39,910 - INFO - 搜索关键词: 10x genomics human
+2025-12-08 12:42:40,102 - ERROR - 搜索失败 10x genomics human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:40,102 - INFO - 搜索关键词: drop-seq human
+2025-12-08 12:42:40,294 - ERROR - 搜索失败 drop-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:40,294 - INFO - 搜索关键词: smart-seq human
+2025-12-08 12:42:40,487 - ERROR - 搜索失败 smart-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:40,487 - INFO - 搜索关键词: single cell gene expression human
+2025-12-08 12:42:40,679 - ERROR - 搜索失败 single cell gene expression human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:40,679 - INFO - 搜索关键词: sc-RNA-seq human
+2025-12-08 12:42:40,871 - ERROR - 搜索失败 sc-RNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:40,871 - INFO - 搜索关键词: human single cell atlas
+2025-12-08 12:42:41,063 - ERROR - 搜索失败 human single cell atlas (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:41,063 - INFO - 搜索关键词: human cell atlas
+2025-12-08 12:42:41,255 - ERROR - 搜索失败 human cell atlas (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:42:41,255 - INFO - 总共收集到 0 个唯一文章
+2025-12-08 12:42:41,255 - WARNING - 未找到任何文章!
+2025-12-08 12:43:15,822 - INFO - ============================================================
+2025-12-08 12:43:15,822 - INFO - 开始收集Figshare单细胞测序数据
+2025-12-08 12:43:15,822 - INFO - ============================================================
+2025-12-08 12:43:15,822 - INFO - 
+步骤 1/3: 收集所有相关文章...
+2025-12-08 12:43:15,822 - INFO - 搜索关键词: single cell RNA-seq human
+2025-12-08 12:43:16,560 - ERROR - 搜索失败 single cell RNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:16,560 - INFO - 搜索关键词: scRNA-seq human
+2025-12-08 12:43:16,742 - ERROR - 搜索失败 scRNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:16,742 - INFO - 搜索关键词: single-cell transcriptome human
+2025-12-08 12:43:16,924 - ERROR - 搜索失败 single-cell transcriptome human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:16,925 - INFO - 搜索关键词: single cell sequencing human
+2025-12-08 12:43:17,107 - ERROR - 搜索失败 single cell sequencing human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:17,107 - INFO - 搜索关键词: 10x genomics human
+2025-12-08 12:43:17,289 - ERROR - 搜索失败 10x genomics human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:17,289 - INFO - 搜索关键词: drop-seq human
+2025-12-08 12:43:17,471 - ERROR - 搜索失败 drop-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:17,471 - INFO - 搜索关键词: smart-seq human
+2025-12-08 12:43:17,653 - ERROR - 搜索失败 smart-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:17,653 - INFO - 搜索关键词: single cell gene expression human
+2025-12-08 12:43:17,835 - ERROR - 搜索失败 single cell gene expression human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:17,835 - INFO - 搜索关键词: sc-RNA-seq human
+2025-12-08 12:43:18,016 - ERROR - 搜索失败 sc-RNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:18,016 - INFO - 搜索关键词: human single cell atlas
+2025-12-08 12:43:18,199 - ERROR - 搜索失败 human single cell atlas (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:18,199 - INFO - 搜索关键词: human cell atlas
+2025-12-08 12:43:18,381 - ERROR - 搜索失败 human cell atlas (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 12:43:18,381 - INFO - 总共收集到 0 个唯一文章
+2025-12-08 12:43:18,381 - WARNING - 未找到任何文章!
+2025-12-08 14:44:54,544 - INFO - ============================================================
+2025-12-08 14:44:54,544 - INFO - 开始收集Figshare单细胞测序数据
+2025-12-08 14:44:54,544 - INFO - ============================================================
+2025-12-08 14:44:54,544 - INFO - 
+步骤 1/3: 收集所有相关文章...
+2025-12-08 14:44:54,545 - INFO - 搜索关键词: single cell RNA-seq human
+2025-12-08 14:44:55,284 - ERROR - 搜索失败 single cell RNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 14:44:55,285 - INFO - 搜索关键词: scRNA-seq human
+2025-12-08 14:44:55,468 - ERROR - 搜索失败 scRNA-seq human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 14:44:55,468 - INFO - 搜索关键词: single-cell transcriptome human
+2025-12-08 14:44:55,652 - ERROR - 搜索失败 single-cell transcriptome human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 14:44:55,652 - INFO - 搜索关键词: single cell sequencing human
+2025-12-08 14:44:55,832 - ERROR - 搜索失败 single cell sequencing human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 14:44:55,833 - INFO - 搜索关键词: 10x genomics human
+2025-12-08 14:44:56,012 - ERROR - 搜索失败 10x genomics human (页 1): 403 Client Error: Forbidden for url: https://api.figshare.com/v2/articles/search
+2025-12-08 14:44:56,012 - INFO - 搜索关键词: drop-seq human

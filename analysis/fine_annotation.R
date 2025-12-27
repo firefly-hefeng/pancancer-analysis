@@ -12,17 +12,9 @@ library(harmony)
 
 # 设置路径
 input_dir <- "/mnt/public7/pancancercol/zhaolingyu/panCNV/cnv_output"
-output_dir <- "/mnt/public7/pancancercol/hefeng/cluster-annotation"
+output_dir <- "/mnt/public7/pancancercol/hefeng/cluster-annotation/fine-annotation"
 sample_info_file <- "/mnt/public7/pancancercol/zhaolingyu/panCNV/inferCNV_ref/sample_info.csv"
 
-# 创建输出目录
-dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-
-# 检查目录创建是否成功
-if (!dir.exists(output_dir)) {
-  stop("无法创建输出目录: ", output_dir)
-}
-message("✓ 输出目录创建成功: ", output_dir)
 
 # 读取样本信息
 sample_info <- read.csv(sample_info_file, stringsAsFactors = FALSE)

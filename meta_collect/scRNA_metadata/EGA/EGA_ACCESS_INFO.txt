@@ -1,0 +1,23 @@
+EGA (European Genome-phenome Archive) 数据访问指南
+================================================================================
+
+EGA是受控访问的归档库,包含个人可识别的遗传和表型数据
+
+访问步骤:
+1. 访问 https://ega-archive.org/
+2. 使用目录搜索功能查找单细胞数据:
+   - Studies: https://ega-archive.org/studies
+   - Datasets: https://ega-archive.org/datasets
+   - DACs: https://ega-archive.org/dacs
+3. 搜索关键词: single cell, scRNA-seq, single-cell RNA sequencing
+4. 申请数据访问:
+   - 找到相关数据集的DAC (Data Access Committee)
+   - 通过DAC Portal提交访问申请
+   - 等待审批(通常需要数周)
+5. 获得授权后,使用EGA download工具下载数据
+
+公开元数据API (有限):
+- Metadata API: https://ega-archive.org/metadata/v2/
+- 仅提供基本的公开元数据摘要
+
+推荐手动访问EGA网站进行数据搜索和申请
